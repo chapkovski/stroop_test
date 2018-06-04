@@ -19,7 +19,7 @@ class TaskTracker(JsonWebsocketConsumer):
         if unanswered_tasks.exists():
             task = unanswered_tasks.first()
         else:
-            color, text =  random.sample(Constants.colors, 2)
+            color, text = random.sample(Constants.colors, 2)
             task = player.tasks.create(color=color, text=text)
         response = self.prepare_task(player, task)
         self.send(response)
@@ -37,7 +37,6 @@ class TaskTracker(JsonWebsocketConsumer):
         response = self.prepare_task(player, newtask)
         player.save()
         self.send(response)
-
 
 
 channel_routing = [
