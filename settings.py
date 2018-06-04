@@ -5,7 +5,7 @@ import dj_database_url
 
 import otree.settings
 
-EXTENSION_APPS = ['minimum']
+EXTENSION_APPS = ['stroopapp']
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -101,10 +101,10 @@ SESSION_CONFIG_DEFAULTS = {
 
 SESSION_CONFIGS = [
     {
-        'name': 'minimum_ret',
-        'display_name': 'Minimum RET',
+        'name': 'stroop',
+        'display_name': 'Stroop',
         'num_demo_participants': 1,
-        'app_sequence': ['minimum'],
+        'app_sequence': ['stroopapp'],
     },
 
 ]

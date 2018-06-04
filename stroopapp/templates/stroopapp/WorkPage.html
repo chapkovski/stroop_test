@@ -2,18 +2,20 @@
 {% load staticfiles otree_tags %}
 
 {% block title %}
-    Counting task
+    Stroop test
 {% endblock %}
 
 {% block content %}
-    <div>What is the difference between 100 and the number below?</div>
-    <h1 class="question"></h1>
-    <div class="form-row align-items-center">
-        <input type="number" id="answer" class="form-control">
-        <button class="answer btn btn-success" type="button">Answer</button>
+    <h1>What color you can see below?</h1>
+    <div class="btn btn-outline-dark btn-lg question my-3"></div>
+    <div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            {% for c in Constants.colors %}
+                <button class="answer btn btn-outline-dark" type="button" data-color="{{ c }}">{{ c }}</button>
+            {% endfor %}
+        </div>
     </div>
-    <div>Number of answered tasks: <span class="num_answered">{{ player.num_answered }}</span></div>
-    <div>Number of correct tasks: <span class="num_correct">{{ player.num_correct }}</span></div>
+
 {% endblock %}
 {% block scripts %}
     <script>
@@ -23,25 +25,18 @@
             var socket = new ReconnectingWebSocket(ws_path);
             socket.onmessage = function (event) {
                 var obj = jQuery.parseJSON(event.data);
-                $('h1.question').html(obj.task);
-                $('span.num_answered').html(obj.num_answered);
-                $('span.num_correct').html(obj.num_correct);
+                var $q = $('div.question');
+                $q.html(obj.color_text);
+                $q.css('background-color', obj.color_color);
+                $q.css('color', 'white');
+
             };
             $("button.answer").on("click", function () {
-                var msg = $('input#answer').val();
+                var msg = $(this).data('color');
+                console.log(msg);
                 if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(msg);
-                }
-                ;
-                $("input#answer").val('');
-            });
-
-            $("input#answer").keydown(function (event) {
-                if (event.keyCode == 13) {
-                    event.preventDefault();
-                    $("button.answer").click();
-                    return false;
-                }
+                    socket.send(JSON.stringify(msg));
+                };
             });
         });
     </script>
