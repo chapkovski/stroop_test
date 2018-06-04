@@ -22,6 +22,16 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    ...
+    dump_tasks = models.LongStringField()
+    num_answered = models.IntegerField(initial=0)
+    num_correct = models.IntegerField(initial=0)
 
 
+from django.db import models as djmodels
+
+
+class Task(djmodels.Model):
+    player = djmodels.ForeignKey(to=Player, related_name='tasks')
+    color = models.StringField()
+    text = models.StringField()
+    answer = models.StringField(null=True)
